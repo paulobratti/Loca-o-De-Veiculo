@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comprovante de Locação</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+    }
+    #comprovante {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      background-color: #28a745;
+      margin-right: 10px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="comprovante">
+    <h2>Comprovante de Locação</h2>
+    <div id="conteudoComprovante"></div>
+    <button onclick="window.print()">Imprimir</button>
+    <button onclick="baixarPDF()">Baixar PDF</button>
+  </div>
+
+<script>
+  // Pega os dados do sessionStorage
+  const dados = JSON.parse(sessionStorage.getItem("dadosLocacao"));
+
+  if (!dados) {
+    document.getElementById("conteudoComprovante").innerHTML = "<p>Erro: Nenhum dado encontrado.</p>";
+  } else {
+    document.getElementById("conteudoComprovante").innerHTML = `
+      <p><strong>Nome:</strong> ${dados.nome}</p>
+      <p><strong>CPF:</strong> ${dados.cpf}</p>
+      <p><strong>E-mail:</strong> ${dados.email}</p>
+      <p><strong>Telefone:</strong> ${dados.telefone}</p>
+      <p><strong>Veículo:</strong> ${dados.carro}</p>
+      <p><strong>Retirada:</strong> ${dados.retirada}</p>
+      <p><strong>Devolução:</strong> ${dados.devolucao}</p>
+      <p><strong>Forma de Pagamento:</strong> ${dados.pagamento}</p>
+      <p><strong>Diárias:</strong> ${dados.dias}</p>
+      <p><strong>Valor Total:</strong> R$ ${dados.valor_total}</p>
+    `;
+  }
+
+  function baixarPDF() {
+    const element = document.getElementById("comprovante");
+    let nomeCliente = dados?.nome?.trim() || "locacao";
+    nomeCliente = nomeCliente.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "_").replace(/[^a-zA-Z0-9_]/g, "");
+    const dataRetirada = dados?.retirada || new Date().toISOString().split("T")[0];
+    const nomeArquivo = `comprovante_${nomeCliente}_${dataRetirada}.pdf`;
+
+    const opt = {
+      margin: 0.5,
+      filename: nomeArquivo,
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+
+</body>
+</html>
