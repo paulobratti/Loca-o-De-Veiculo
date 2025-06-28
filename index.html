@@ -122,6 +122,9 @@
 
       <p id="valorTotal" style="margin-top: 15px; font-weight: bold;">Valor total: R$ 0,00</p>
 
+      <!-- Campo oculto que será enviado com o valor total -->
+      <input type="hidden" name="valor_total" id="inputValorTotal">
+
       <button type="submit">Confirmar Locação</button>
     </form>
 
@@ -137,6 +140,7 @@
       const retiradaInput = document.getElementById("retirada");
       const devolucaoInput = document.getElementById("devolucao");
       const valorTotal = document.getElementById("valorTotal");
+      const inputValorTotal = document.getElementById("inputValorTotal");
 
       let diasGlobal = 0;
       let totalGlobal = 0;
@@ -152,6 +156,7 @@
           valorTotal.textContent = "Valor total: R$ 0,00";
           diasGlobal = 0;
           totalGlobal = 0;
+          inputValorTotal.value = "";
           return;
         }
 
@@ -163,6 +168,7 @@
         totalGlobal = total;
 
         valorTotal.textContent = `Valor total (${dias} diárias): R$ ${total.toFixed(2).replace('.', ',')}`;
+        inputValorTotal.value = total.toFixed(2).replace('.', ',');
       }
 
       function validarFormulario() {
@@ -181,7 +187,6 @@
           return false;
         }
 
-        // Mostrar resumo antes de enviar
         const nome = document.getElementById("nome").value;
         const cpf = document.getElementById("cpf").value;
         const email = document.getElementById("email").value;
@@ -209,7 +214,7 @@ Valor total: R$ ${totalGlobal.toFixed(2).replace('.', ',')}
 
       function aplicarMascaraCPF(campo) {
         campo.value = campo.value
-          .replace(/\D/g, '') // Remove tudo que não é número
+          .replace(/\D/g, '')
           .replace(/(\d{3})(\d)/, '$1.$2')
           .replace(/(\d{3})(\d)/, '$1.$2')
           .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
