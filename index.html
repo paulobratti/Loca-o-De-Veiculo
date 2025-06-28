@@ -173,7 +173,7 @@
         diasGlobal = dias;
         totalGlobal = total;
 
-        valorTotal.textContent = Valor total (${dias} diárias): R$ ${total.toFixed(2).replace('.', ',')};
+        valorTotal.textContent = `Valor total (${dias} diárias): R$ ${total.toFixed(2).replace('.', ',')}`;
         inputValorTotal.value = total.toFixed(2).replace('.', ',');
       }
 
@@ -200,7 +200,7 @@
         const carro = carroSelect.value;
         const pagamento = document.getElementById("pagamento").value;
 
-                const resumoHTML = 
+                const resumoHTML = `
           <p><strong>Nome:</strong> ${nome}</p>
           <p><strong>CPF:</strong> ${cpf}</p>
           <p><strong>E-mail:</strong> ${email}</p>
@@ -211,7 +211,7 @@
           <p><strong>Forma de Pagamento:</strong> ${pagamento}</p>
           <p><strong>Diárias:</strong> ${diasGlobal}</p>
           <p><strong>Valor Total:</strong> R$ ${totalGlobal.toFixed(2).replace('.', ',')}</p>
-        ;
+        `;
 
         document.getElementById("conteudoComprovante").innerHTML = resumoHTML;
         document.getElementById("comprovanteCompra").style.display = "block";
