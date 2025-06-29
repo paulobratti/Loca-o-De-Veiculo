@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Comprovante de Locação</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f7f7f7;
-      padding: 30px;
+      background-color: #e9ecef;
+      padding: 40px;
     }
     .comprovante {
+      background: #fff;
       max-width: 700px;
       margin: auto;
-      background: white;
       padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
     h1 {
       text-align: center;
-      margin-bottom: 30px;
+      color: #333;
     }
-    .dados p {
-      margin: 10px 0;
-      line-height: 1.6;
+    .info {
+      margin-top: 20px;
+      line-height: 1.8;
     }
     button {
       display: block;
       margin: 30px auto 0;
-      padding: 12px 24px;
+      padding: 12px 20px;
       background-color: #007bff;
-      color: white;
       border: none;
-      border-radius: 6px;
+      color: white;
       font-size: 16px;
+      border-radius: 6px;
       cursor: pointer;
     }
     button:hover {
@@ -44,31 +44,30 @@
 </head>
 <body>
 
-  <div class="comprovante">
-    <h1>Comprovante de Locação</h1>
-    <div class="dados" id="dadosComprovante">
-      <!-- dados preenchidos via JavaScript -->
-    </div>
-    <button onclick="window.print()">Imprimir ou Salvar PDF</button>
-  </div>
+<div class="comprovante">
+  <h1>Comprovante de Locação</h1>
+  <div class="info" id="dadosComprovante"></div>
+  <button onclick="window.print()">Imprimir ou Salvar PDF</button>
+</div>
 
 <script>
-  const dados = JSON.parse(sessionStorage.getItem("comprovante"));
-  if (!dados) {
-    document.getElementById("dadosComprovante").innerHTML = "<p>Nenhum dado disponível.</p>";
-  } else {
+  const dados = JSON.parse(sessionStorage.getItem("dadosLocacao"));
+
+  if (dados) {
     document.getElementById("dadosComprovante").innerHTML = `
       <p><strong>Nome:</strong> ${dados.nome}</p>
       <p><strong>CPF:</strong> ${dados.cpf}</p>
       <p><strong>E-mail:</strong> ${dados.email}</p>
       <p><strong>Telefone:</strong> ${dados.telefone}</p>
-      <p><strong>Veículo:</strong> ${dados.carro}</p>
+      <p><strong>Carro:</strong> ${dados.carro}</p>
       <p><strong>Retirada:</strong> ${dados.retirada}</p>
       <p><strong>Devolução:</strong> ${dados.devolucao}</p>
-      <p><strong>Forma de Pagamento:</strong> ${dados.pagamento}</p>
-      <p><strong>Diárias:</strong> ${dados.dias}</p>
-      <p><strong>Valor Total:</strong> R$ ${dados.total}</p>
+      <p><strong>Forma de pagamento:</strong> ${dados.pagamento}</p>
+      <p><strong>Diárias:</strong> ${dados.diarias}</p>
+      <p><strong>Valor Total:</strong> R$ ${dados.valor_total}</p>
     `;
+  } else {
+    document.getElementById("dadosComprovante").innerHTML = "<p style='color:red;'>Erro ao carregar dados da locação.</p>";
   }
 </script>
 
